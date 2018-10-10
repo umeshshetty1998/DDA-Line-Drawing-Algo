@@ -1,43 +1,49 @@
-#include <graphics.h>
-#include <stdio.h>
-#include <math.h>
-#include <dos.h>
- 
-void main( )
-{
-    float x,y,x1,y1,x2,y2,dx,dy,step;
-    int i,gd=DETECT,gm;
- 
-    initgraph(&gd,&gm,"c:\\turboc3\\bgi");
- 
-    printf("Enter the value of x1 and y1 : ");
-    scanf("%f%f",&x1,&y1);
-    printf("Enter the value of x2 and y2: ");
-    scanf("%f%f",&x2,&y2);
- 
-    dx=abs(x2-x1);
-    dy=abs(y2-y1);
- 
-    if(dx>=dy)
-        step=dx;
-    else
-        step=dy;
- 
-    dx=dx/step;
-    dy=dy/step;
- 
-    x=x1;
-    y=y1;
- 
-    i=1;
-    while(i<=step)
-    {
-        putpixel(x,y,5);
-        x=x+dx;
-        y=y+dy;
-        i=i+1;
-        delay(100);
-    }
- 
-    closegraph();
-}
+// C program for DDA line generation 
+#include<stdio.h> 
+#include<graphics.h> 
+  
+//Function for finding absolute value 
+int abs (int n) 
+{ 
+    return ( (n>0) ? n : ( n * (-1))); 
+} 
+  
+//DDA Function for line generation 
+void DDA(int X0, int Y0, int X1, int Y1) 
+{ 
+    // calculate dx & dy 
+    int dx = X1 - X0; 
+    int dy = Y1 - Y0; 
+  
+    // calculate steps required for generating pixels 
+    int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy); 
+  
+    // calculate increment in x & y for each steps 
+    float Xinc = dx / (float) steps; 
+    float Yinc = dy / (float) steps; 
+  
+    // Put pixel for each step 
+    float X = X0; 
+    float Y = Y0; 
+    for (int i = 0; i <= steps; i++) 
+    { 
+        putpixel (X,Y,RED);  // put pixel at (X,Y) 
+        X += Xinc;           // increment in x at each step 
+        Y += Yinc;           // increment in y at each step 
+        delay(100);          // for visualization of line- 
+                             // generation step by step 
+    } 
+} 
+  
+// Driver program 
+int main() 
+{ 
+    int gd = DETECT, gm; 
+  
+    // Initialize graphics function 
+    initgraph (&gd, &gm, "");    
+  
+    int X0 = 2, Y0 = 2, X1 = 14, Y1 = 16; 
+    DDA(2, 2, 14, 16); 
+    return 0; 
+}  
